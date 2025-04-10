@@ -35,6 +35,7 @@ import { RainbowButton } from "@/components/ui/rainbow-button";
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { queryClient } from '@/lib/queryClient';
+import { getCampaignImageUrl } from '@/lib/imageUtils';
 
 interface CampaignDetailProps {
   campaignId: string;
@@ -143,7 +144,17 @@ const CampaignDetail = ({ campaignId }: CampaignDetailProps) => {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <div className="bg-gray-300 w-full h-64 rounded-2xl mb-6"></div>
+          <div className="w-full h-64 rounded-2xl mb-6 overflow-hidden">
+            <img 
+              src={getCampaignImageUrl({ 
+                title: campaign.title, 
+                category: campaign.category, 
+                imageUrl: campaign.imageUrl 
+              })} 
+              alt={campaign.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
           
           <h1 className="text-3xl font-bold mb-4">{campaign.title}</h1>
           

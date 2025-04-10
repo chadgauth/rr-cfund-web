@@ -3,6 +3,7 @@ import { Campaign } from "@shared/schema";
 import { ProgressBar } from "@/components/ui/progress-bar";
 import { Users, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getCampaignImageUrl } from "@/lib/imageUtils";
 
 interface CampaignCardProps {
   campaign: Campaign;
@@ -24,6 +25,9 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
   // Calculate percentage raised
   const percentRaised = Math.round((raised / goal) * 100);
   
+  // Get campaign image (either actual image or generated SVG)
+  const campaignImageUrl = getCampaignImageUrl({ title, category, imageUrl });
+  
   // Determine the progress bar color based on category
   const getBarColor = (category: string) => {
     switch(category) {
@@ -39,8 +43,14 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
   return (
     <div className="campaign-card bg-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
       <div className="relative">
-        <div className="w-full h-48 bg-gray-300"></div>
-        <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-lg text-sm font-medium">
+        <div className="w-full h-48 bg-gray-200 overflow-hidden">
+          <img 
+            src={campaignImageUrl} 
+            alt={title} 
+            className="w-full h-full object-cover" 
+          />
+        </div>
+        <div className="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-lg text-sm font-medium shadow-md">
           {category}
         </div>
       </div>
