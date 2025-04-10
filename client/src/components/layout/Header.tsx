@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Header = () => {
@@ -52,6 +52,12 @@ const Header = () => {
                 Contact
               </span>
             </Link>
+            <Link href="/assistant">
+              <span className={`font-medium flex items-center gap-1 ${isActive("/assistant") ? "text-primary" : "hover:text-primary"} transition`}>
+                <Sparkles size={16} />
+                Assistant
+              </span>
+            </Link>
             <Button asChild className="bg-primary text-white rounded-xl">
               <Link href="/create-campaign">Start Campaign</Link>
             </Button>
@@ -92,6 +98,12 @@ const Header = () => {
             <Link href="/contact" onClick={closeMenu}>
               <span className={`block py-2 ${isActive("/contact") ? "text-primary" : "hover:text-primary"} transition`}>
                 Contact
+              </span>
+            </Link>
+            <Link href="/assistant" onClick={closeMenu}>
+              <span className={`flex items-center gap-1 py-2 ${isActive("/assistant") ? "text-primary" : "hover:text-primary"} transition`}>
+                <Sparkles size={16} />
+                Assistant
               </span>
             </Link>
             <Link href="/create-campaign" onClick={closeMenu}>
