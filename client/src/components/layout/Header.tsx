@@ -101,6 +101,12 @@ const Header = () => {
                 About
               </span>
             </Link>
+            <Link href="/about#team" onClick={closeMenu}>
+              <span className={`block py-2 flex items-center hover:text-primary transition`}>
+                <Sparkles size={16} className="mr-1" />
+                Meet the Team
+              </span>
+            </Link>
             <Link href="/contact" onClick={closeMenu}>
               <span className={`block py-2 ${isActive("/contact") ? "text-primary" : "hover:text-primary"} transition`}>
                 Contact
