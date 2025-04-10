@@ -201,51 +201,57 @@ export class DatabaseStorage implements IStorage {
   private async seedCampaigns() {
     const now = new Date();
     
-    // Campaign data separately
-    await db.insert(campaigns).values({
-      title: "Spectrum Lounge",
-      description: "A new inclusive cocktail bar with a focus on craft drinks and community events serving queer communities across all dimensions.",
-      category: "Bar & Lounge",
-      goal: 75000,
-      raised: 47500,
-      backers: 214,
-      imageUrl: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      userId: 1,
-      location: "East Austin and Beyond",
-      createdAt: now,
-      deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-      ownerName: "Riley Johnson"
-    });
-    
-    await db.insert(campaigns).values({
-      title: "Cosmic Rainbow Hub",
-      description: "A multi-purpose community center offering resources, meeting spaces, and support for LGBTQ+ individuals across all galaxies.",
-      category: "Community Center",
-      goal: 120000,
-      raised: 89250,
-      backers: 432,
-      imageUrl: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      userId: 1,
-      location: "Cosmic Central",
-      createdAt: now,
-      deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
-      ownerName: "Jordan Smith"
-    });
-    
-    await db.insert(campaigns).values({
-      title: "Interstellar Neon Nights",
-      description: "A vibrant dance club with multiple dimensions offering diverse music styles and inclusive theme nights for all beings.",
-      category: "Dance Club",
-      goal: 150000,
-      raised: 32800,
-      backers: 165,
-      imageUrl: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      userId: 1,
-      location: "Universal South",
-      createdAt: now,
-      deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
-      ownerName: "Sam Wilson"
-    });
+    try {
+      // First campaign
+      await db.insert(campaigns).values([{
+        title: "Spectrum Lounge",
+        description: "A new inclusive cocktail bar with a focus on craft drinks and community events serving queer communities across all dimensions.",
+        category: "Bar & Lounge",
+        goal: 75000,
+        raised: 47500,
+        backers: 214,
+        daysLeft: 14,
+        imageUrl: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+        userId: 1,
+        location: "East Austin and Beyond",
+        deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+        ownerName: "Riley Johnson"
+      }]);
+      
+      // Second campaign
+      await db.insert(campaigns).values([{
+        title: "Cosmic Rainbow Hub",
+        description: "A multi-purpose community center offering resources, meeting spaces, and support for LGBTQ+ individuals across all galaxies.",
+        category: "Community Center",
+        goal: 120000,
+        raised: 89250,
+        backers: 432,
+        daysLeft: 21,
+        imageUrl: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+        userId: 1,
+        location: "Cosmic Central, Austin",
+        deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
+        ownerName: "Jordan Smith"
+      }]);
+      
+      // Third campaign
+      await db.insert(campaigns).values([{
+        title: "Interstellar Neon Nights",
+        description: "A vibrant dance club with multiple dimensions offering diverse music styles and inclusive theme nights for all beings.",
+        category: "Dance Club",
+        goal: 150000,
+        raised: 32800,
+        backers: 165,
+        daysLeft: 45,
+        imageUrl: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+        userId: 1,
+        location: "South Austin's Universe",
+        deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+        ownerName: "Sam Wilson"
+      }]);
+    } catch (error) {
+      console.error("Error seeding campaigns:", error);
+    }
   }
 }
 

@@ -18,11 +18,13 @@ export const campaigns = pgTable("campaigns", {
   goal: integer("goal").notNull(),
   raised: integer("raised").default(0),
   backers: integer("backers").default(0),
-  daysLeft: integer("days_left").notNull(),
+  daysLeft: integer("days_left").default(30),
   imageUrl: text("image_url"),
   userId: integer("user_id").notNull(),
   location: text("location"),
   createdAt: timestamp("created_at").defaultNow(),
+  deadline: timestamp("deadline"),
+  ownerName: text("owner_name"),
 });
 
 export const donations = pgTable("donations", {
