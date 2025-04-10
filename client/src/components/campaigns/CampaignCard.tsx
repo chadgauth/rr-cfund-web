@@ -22,11 +22,19 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
     imageUrl 
   } = campaign;
 
+  // Campaign values with defaults to handle null/undefined
+  const safeRaised = raised || 0;
+  const safeGoal = goal || 1;
+  
   // Calculate percentage raised
-  const percentRaised = Math.round((raised / goal) * 100);
+  const percentRaised = Math.round((safeRaised / safeGoal) * 100);
   
   // Get campaign image (either actual image or generated SVG)
-  const campaignImageUrl = getCampaignImageUrl({ title, category, imageUrl });
+  const campaignImageUrl = getCampaignImageUrl({ 
+    title, 
+    category, 
+    imageUrl: imageUrl || undefined 
+  });
   
   // Determine the progress bar color based on category
   const getBarColor = (category: string) => {
@@ -60,12 +68,12 @@ const CampaignCard = ({ campaign }: CampaignCardProps) => {
         
         <div className="mb-4">
           <div className="flex justify-between text-sm mb-1">
-            <span className="font-medium">${raised.toLocaleString()} raised</span>
-            <span className="text-gray-500">of ${goal.toLocaleString()} goal</span>
+            <span className="font-medium">${safeRaised.toLocaleString()} raised</span>
+            <span className="text-gray-500">of ${safeGoal.toLocaleString()} goal</span>
           </div>
           <ProgressBar 
-            value={raised} 
-            max={goal} 
+            value={safeRaised} 
+            max={safeGoal} 
             barColor={getBarColor(category)}
           />
         </div>

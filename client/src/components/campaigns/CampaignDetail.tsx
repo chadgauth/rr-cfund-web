@@ -132,7 +132,10 @@ const CampaignDetail = ({ campaignId }: CampaignDetailProps) => {
     );
   }
 
-  const percentRaised = Math.round((campaign.raised / campaign.goal) * 100);
+  // Safe values to handle null/undefined
+  const safeRaised = campaign.raised || 0;
+  const safeGoal = campaign.goal || 1;
+  const percentRaised = Math.round((safeRaised / safeGoal) * 100);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -149,7 +152,7 @@ const CampaignDetail = ({ campaignId }: CampaignDetailProps) => {
               src={getCampaignImageUrl({ 
                 title: campaign.title, 
                 category: campaign.category, 
-                imageUrl: campaign.imageUrl 
+                imageUrl: campaign.imageUrl || undefined 
               })} 
               alt={campaign.title}
               className="w-full h-full object-cover"
@@ -216,13 +219,13 @@ const CampaignDetail = ({ campaignId }: CampaignDetailProps) => {
             <CardHeader>
               <CardTitle>Campaign Progress</CardTitle>
               <CardDescription>
-                ${campaign.raised.toLocaleString()} raised of ${campaign.goal.toLocaleString()} goal
+                ${safeRaised.toLocaleString()} raised of ${safeGoal.toLocaleString()} goal
               </CardDescription>
             </CardHeader>
             <CardContent>
               <ProgressBar 
-                value={campaign.raised} 
-                max={campaign.goal} 
+                value={safeRaised} 
+                max={safeGoal} 
                 className="mb-4" 
               />
               
