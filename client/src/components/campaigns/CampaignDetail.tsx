@@ -50,6 +50,10 @@ const CampaignDetail = ({ campaignId }: CampaignDetailProps) => {
   const { data: campaign, isLoading } = useQuery<Campaign>({
     queryKey: [`/api/campaigns/${campaignId}`],
   });
+  
+  // Create safe values for campaign properties (handling null/undefined)
+  const safeRaised = campaign?.raised ?? 0;
+  const safeGoal = campaign?.goal ?? 1;
 
   const handleDonation = async () => {
     if (!campaign) return;
@@ -132,9 +136,7 @@ const CampaignDetail = ({ campaignId }: CampaignDetailProps) => {
     );
   }
 
-  // Safe values to handle null/undefined
-  const safeRaised = campaign.raised || 0;
-  const safeGoal = campaign.goal || 1;
+  // Calculate percentage for display
   const percentRaised = Math.round((safeRaised / safeGoal) * 100);
 
   return (
