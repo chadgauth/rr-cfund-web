@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { generateRainbowGradient } from "@/lib/imageUtils";
 import { RainbowButton } from "@/components/ui/rainbow-button";
+import { MarkdownPreview } from "@/components/ui/md-editor";
 
 interface CampaignTemplateProps {
   onSelect: (templateData: any) => void;

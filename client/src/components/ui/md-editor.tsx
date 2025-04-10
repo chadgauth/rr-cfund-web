@@ -50,7 +50,8 @@ export function MarkdownEditor({
         />
       </FormControl>
       
-      <style jsx global>{`
+      <style>
+        {`
         .md-editor-custom {
           border: none !important;
           font-family: inherit;
@@ -101,7 +102,8 @@ export function MarkdownEditor({
           background-color: hsl(var(--muted));
           color: hsl(var(--foreground));
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 }
@@ -110,7 +112,8 @@ export function MarkdownPreview({ content }: { content: string }) {
   return (
     <div data-color-mode="light" className="markdown-preview">
       <MDEditor.Markdown source={content} rehypePlugins={[[rehypeSanitize]]} />
-      <style jsx global>{`
+      <style>
+        {`
         .markdown-preview .wmde-markdown {
           background-color: transparent;
           font-family: inherit;
@@ -146,7 +149,8 @@ export function MarkdownPreview({ content }: { content: string }) {
           background-color: hsl(var(--muted));
           color: hsl(var(--foreground));
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 }

@@ -36,6 +36,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import { queryClient } from '@/lib/queryClient';
 import { getCampaignImageUrl } from '@/lib/imageUtils';
+import { MarkdownPreview } from '@/components/ui/md-editor';
 
 interface CampaignDetailProps {
   campaignId: string;
@@ -177,19 +178,29 @@ const CampaignDetail = ({ campaignId }: CampaignDetailProps) => {
             <TabsContent value="about" className="text-gray-700">
               <p className="mb-6">{campaign.description}</p>
               
+              {campaign.content && (
+                <div className="mb-8">
+                  <MarkdownPreview content={campaign.content} />
+                </div>
+              )}
+              
               <h3 className="text-xl font-bold mb-4">Location</h3>
               <div className="bg-gray-100 p-4 rounded-xl mb-6">
                 <div className="flex items-center">
                   <Map className="h-5 w-5 mr-2 text-primary" />
-                  <span>{campaign.location}</span>
+                  <span>{campaign.location || "Austin, TX"}</span>
                 </div>
               </div>
               
-              <h3 className="text-xl font-bold mb-4">Campaign Details</h3>
-              <p className="mb-4">
-                This campaign was created to establish a new LGBTQ+ venue in Austin.
-                The funds will go towards securing a location, renovations, permits, and initial operating costs.
-              </p>
+              {!campaign.content && (
+                <>
+                  <h3 className="text-xl font-bold mb-4">Campaign Details</h3>
+                  <p className="mb-4">
+                    This campaign was created to establish a new LGBTQ+ venue in Austin.
+                    The funds will go towards securing a location, renovations, permits, and initial operating costs.
+                  </p>
+                </>
+              )}
             </TabsContent>
             
             <TabsContent value="updates">

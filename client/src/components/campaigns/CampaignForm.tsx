@@ -175,14 +175,15 @@ const CampaignForm = () => {
               <FormItem>
                 <FormLabel>Campaign Content</FormLabel>
                 <FormControl>
-                  <Textarea
+                  <MarkdownEditor
+                    value={field.value || ''}
+                    onChange={(value) => field.onChange(value || '')}
                     placeholder="Add detailed content for your campaign, including your story, goals, rewards, etc."
-                    className="min-h-64 font-mono text-sm"
-                    {...field}
+                    minHeight={400}
                   />
                 </FormControl>
                 <FormDescription>
-                  Markdown formatting is supported. Tell your cosmic story and how your space will shine in the queer universe.
+                  Use the editor to format your cosmic story. Tell us how your space will shine in the queer universe.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
