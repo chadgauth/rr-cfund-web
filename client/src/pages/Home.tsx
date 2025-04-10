@@ -7,6 +7,9 @@ import LocationMap from "@/components/home/LocationMap";
 import HowItWorks from "@/components/home/HowItWorks";
 import Testimonials from "@/components/home/Testimonials";
 import Newsletter from "@/components/home/Newsletter";
+import CosmicRewards from "@/components/home/CosmicRewards";
+import CommunitySupport from "@/components/home/CommunitySupport";
+import UpdatesAndMilestones from "@/components/home/UpdatesAndMilestones";
 
 const Home = () => {
   return (
@@ -16,6 +19,9 @@ const Home = () => {
         <Hero />
         <Mission />
         <FeaturedCampaigns />
+        <CosmicRewards />
+        <CommunitySupport />
+        <UpdatesAndMilestones />
         <LocationMap />
         <HowItWorks />
         <Testimonials />
