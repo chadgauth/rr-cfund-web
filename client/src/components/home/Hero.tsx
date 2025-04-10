@@ -35,11 +35,11 @@ const Hero = () => {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
-            Rebuilding Austin's Queer Spaces Together
+            Empowering Queer Spaces Across The Universe
           </h1>
           
           <p className="text-xl md:text-2xl text-white opacity-90 mb-10 drop-shadow-md">
-            Crowdfunding the future of LGBTQ+ venues and community spaces in our city.
+            Crowdfunding the future of LGBTQ+ venues and community spaces anywhere and everywhere in the cosmos.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">

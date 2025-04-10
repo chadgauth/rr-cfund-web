@@ -10,10 +10,10 @@ const Mission = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Mission</h2>
             <div className="h-1 w-20 bg-[#E71D36] mb-6"></div>
             <p className="text-lg mb-6">
-              As development changes Austin's historic 4th Street district, we're on a mission to preserve and create new queer spaces that will serve our community for decades to come.
+              From Earth's vibrant cities to the farthest reaches of the cosmos, we're on a mission to create, preserve, and celebrate queer spaces that transcend planetary boundaries and serve all beings across the universe.
             </p>
             <p className="text-lg mb-6">
-              Rainbow Rise empowers the LGBTQ+ community to fund and build the venues, bars, cafes, and community centers we need and deserve.
+              Rainbow Rise empowers LGBTQ+ communities everywhere—whether in Austin, Alpha Centauri, or anywhere in between—to fund and build the venues, bars, cafes, and community centers that every queer being in the universe deserves.
             </p>
             <div className="flex flex-wrap gap-4 mb-6">
               <div className="bg-gray-100 p-4 rounded-xl">
@@ -29,11 +29,9 @@ const Mission = () => {
                 <div className="text-sm">Supporters</div>
               </div>
             </div>
-            <Link href="/about">
-              <a className="text-primary font-medium flex items-center hover:underline">
-                Learn more about our story
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </a>
+            <Link href="/about" className="text-primary font-medium flex items-center hover:underline">
+              Learn more about our cosmic story
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
           <div className="md:w-1/2 grid grid-cols-2 gap-4">

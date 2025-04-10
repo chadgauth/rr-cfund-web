@@ -67,17 +67,19 @@ export default function NotFound() {
         </div>
         
         <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 mb-4">
-          OH NO, HONEY!
+          OH NO, COSMIC HONEY!
         </h1>
         
         <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 p-px rounded-lg mb-6">
           <div className="bg-black p-4 rounded-lg">
             <p className="text-white mb-2 flex items-center justify-center">
               <Frown className="w-5 h-5 mr-2 text-pink-500" />
-              <span>This page doesn't exist, and we're as upset about it as you are!</span>
+              <span>This page doesn't exist in ANY universe, and we're as upset about it as you are!</span>
             </p>
             <p className="text-gray-300 text-sm">
-              Maybe it was so fabulous it transcended this digital plane? Either way, let's get you back on track!
+              Maybe it was so fabulous it transcended all known dimensions? 
+              Perhaps it exists in a queer-friendly parallel universe? 
+              Either way, let's get you back on the intergalactic path!
             </p>
           </div>
         </div>
@@ -93,7 +95,7 @@ export default function NotFound() {
         
         <div className="mt-8 flex items-center text-gray-300 text-xs animate-pulse">
           <Sparkles className="w-4 h-4 mr-1 text-yellow-400" />
-          <span>She's giving 404 realness, but you don't need to stay!</span>
+          <span>She's giving interstellar 404 realness, but your cosmic journey doesn't end here!</span>
         </div>
       </div>
     </div>

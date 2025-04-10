@@ -12,19 +12,23 @@ import {
 import { generateRainbowGradient, svgToDataURL } from '@/lib/imageUtils';
 
 const sassyMessages = [
-  "Honey, this venue's gonna be FIERCE! 💅",
-  "werk werk werk! Support this campaign now! 👑",
-  "Slaaaaay! This space is gonna be LEGENDARY!",
-  "We're taking over Austin, one fabulous venue at a time!",
-  "That's not just a bar, that's a cultural RESET!",
-  "Did someone say 'iconic'? Because that's what this is! ✨",
-  "I'm gagged, I'm gooped, I'm supporting this campaign!",
-  "Serving looks and serving drinks - a vibe! 💖",
-  "YASSSS! This campaign is EVERYTHING!",
-  "Get into it, bestie! This venue is the tea!",
-  "The girlies are gonna EAT THIS UP!",
-  "Austin isn't ready for this level of FABULOUSNESS!",
-  "This venue? MOTHER behavior only! 🌈"
+  "Honey, this venue's gonna be FIERCE across the entire galaxy! 💅",
+  "werk werk werk! Support this campaign in this dimension and beyond! 👑",
+  "Slaaaaay! This space is gonna be LEGENDARY in every corner of the universe!",
+  "We're taking over the COSMOS, one fabulous queer venue at a time!",
+  "That's not just a bar, that's a UNIVERSAL cultural RESET!",
+  "Did someone say 'iconic'? Because this is transcending GALAXIES! ✨",
+  "I'm gagged, I'm gooped, I'm supporting this INTERSTELLAR campaign!",
+  "Serving looks and serving drinks in EVERY DIMENSION - what a vibe! 💖",
+  "YASSSS! This campaign is EVERYTHING the universal queer community needs!",
+  "Get into it, bestie! This venue is the cosmic tea!",
+  "The beings of the universe are gonna EAT THIS UP!",
+  "The multiverse isn't ready for this level of FABULOUSNESS!",
+  "This venue? CELESTIAL MOTHER behavior only! 🌈",
+  "Creating queer spaces that transcend TIME AND SPACE, period!",
+  "We're not just building venues, we're creating INTERDIMENSIONAL safe havens!",
+  "From Earth to Alpha Centauri, we're making the cosmos FABULOUSLY queer!",
+  "The stars aligned for THIS level of queer excellence!"
 ];
 
 export function SassyHelper() {

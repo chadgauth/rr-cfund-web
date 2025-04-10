@@ -116,7 +116,15 @@ export function MapPlaceholder({ title, description, className }: MapPlaceholder
       {/* Fun personality badge */}
       <div className="absolute top-4 right-4 bg-black bg-opacity-70 backdrop-blur-md p-2 rounded-full shadow-lg animate-bounce">
         <div className="px-3 py-1 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full">
-          <span className="text-xs font-bold tracking-wide text-white">FABULOUS AF!</span>
+          <span className="text-xs font-bold tracking-wide text-white">COSMICALLY FABULOUS!</span>
+        </div>
+      </div>
+      
+      {/* Cosmic elements */}
+      <div className="absolute bottom-4 right-4 text-xs text-white bg-black bg-opacity-50 backdrop-blur-sm p-2 rounded-lg animate-pulse">
+        <div className="flex items-center">
+          <Sparkles className="h-3 w-3 mr-1 text-yellow-400" />
+          <span>Queer spaces mapped across all galaxies</span>
         </div>
       </div>
     </div>
