@@ -302,18 +302,21 @@ const CampaignForm = () => {
                     </div>
                   )}
                   
-                  <FormControl>
-                    <div className="flex items-center gap-4">
-                      <input 
-                        type="hidden" 
-                        {...field}
-                      />
+                  <div className="flex items-center gap-4">
+                    <input 
+                      type="hidden" 
+                      name={field.name}
+                      ref={field.ref}
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                    />
+                    <FormControl>
                       <ImageGenerator 
                         prompt={form.watch("title") || ''} 
                         onImageGenerated={handleImageGenerated} 
                       />
-                    </div>
-                  </FormControl>
+                    </FormControl>
+                  </div>
                   <FormDescription>
                     Generate a cosmic-themed image for your campaign using AI, or use our default rainbow gradient.
                   </FormDescription>

@@ -35,11 +35,18 @@ const Hero = () => {
           </div>
           
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
-            Empowering Queer Spaces Across The Universe
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 animate-pulse">
+              STARDUST REBELLION:
+            </span> <br/>
+            <span className="relative">
+              Where Queer Love Transcends Galaxies
+              <span className="absolute -top-2 -right-4 text-yellow-300 text-3xl animate-spin-slow">✨</span>
+              <span className="absolute -bottom-2 -left-4 text-blue-300 text-3xl animate-bounce">★</span>
+            </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-white opacity-90 mb-10 drop-shadow-md">
-            Crowdfunding the future of LGBTQ+ venues and community spaces anywhere and everywhere in the cosmos.
+            Crowdfunding cosmic sanctuaries for LGBTQ+ souls to shine their authentic brilliance across every dimension of the universe.
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
