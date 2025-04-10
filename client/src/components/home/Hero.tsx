@@ -4,7 +4,7 @@ import { CosmicBackground, CosmicText, GlowingText } from "@/components/ui/cosmi
 import { generateRainbowGradient } from "@/lib/imageUtils";
 
 // Neon Planet SVG component
-const NeonPlanet = ({ className = "" }) => (
+const NeonPlanet = ({ className = "" }: { className?: string }) => (
   <div className={`relative ${className}`}>
     <div className="absolute inset-0 rounded-full bg-pink-700 blur-xl opacity-50 animate-cosmic-slow"></div>
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="relative z-10 animate-float">
@@ -27,7 +27,7 @@ const NeonPlanet = ({ className = "" }) => (
 );
 
 // Star component
-const Star = ({ x, y, size, delay }) => (
+const Star = ({ x, y, size, delay }: { x: number, y: number, size: number, delay: number }) => (
   <div 
     className="absolute rounded-full bg-white animate-sparkle"
     style={{
