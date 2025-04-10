@@ -47,6 +47,12 @@ const Header = () => {
                 About
               </span>
             </Link>
+            <Link href="/about#team">
+              <span className={`font-medium hover:text-primary transition flex items-center`}>
+                <Sparkles size={16} className="mr-1" />
+                Meet the Team
+              </span>
+            </Link>
             <Link href="/contact">
               <span className={`font-medium ${isActive("/contact") ? "text-primary" : "hover:text-primary"} transition`}>
                 Contact

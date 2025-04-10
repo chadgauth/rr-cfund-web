@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HowItWorks from "@/components/home/HowItWorks";
+import { MeetTheTeam } from "@/components/about/MeetTheTeam";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import { Link } from "wouter";
 
@@ -66,8 +67,12 @@ const About = () => {
         <section id="how-it-works" className="bg-gray-50">
           <HowItWorks />
         </section>
+
+        <section id="team" className="py-12 bg-white">
+          <MeetTheTeam />
+        </section>
         
-        <section id="faq" className="py-16 bg-white">
+        <section id="faq" className="py-16 bg-gray-100">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
