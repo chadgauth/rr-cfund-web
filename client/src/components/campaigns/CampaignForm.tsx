@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { CampaignTemplates } from "./CampaignTemplates";
+import { MarkdownEditor } from "@/components/ui/md-editor";
 
 import {
   Form,
