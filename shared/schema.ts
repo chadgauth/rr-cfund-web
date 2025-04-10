@@ -14,6 +14,7 @@ export const campaigns = pgTable("campaigns", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull(),
+  content: text("content"),  // Detailed campaign content with markdown support
   category: text("category").notNull(),
   goal: integer("goal").notNull(),
   raised: integer("raised").default(0),

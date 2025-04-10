@@ -58,6 +58,7 @@ const CampaignForm = () => {
   const defaultValues: Partial<FormValues> = {
     title: "",
     description: "",
+    content: "",
     category: "Bar & Lounge",
     goal: 10000,
     daysLeft: 30,
@@ -259,7 +260,11 @@ const CampaignForm = () => {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="East Austin, Downtown, etc." {...field} />
+                    <Input 
+                      placeholder="East Austin, Downtown, etc." 
+                      {...field}
+                      value={field.value || ''}
+                    />
                   </FormControl>
                   <FormDescription>
                     Which area of Austin are you targeting?
