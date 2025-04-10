@@ -225,12 +225,8 @@ Help us create this gravitational center for our community! ☕`,
               <p className="text-muted-foreground mb-4">{selectedTemplate.description}</p>
               
               <p className="mb-2 font-medium">Preview of Content:</p>
-              <div className="bg-muted p-4 rounded-md max-h-64 overflow-y-auto font-mono text-xs">
-                {selectedTemplate.content.split('\n').map((line, i) => (
-                  <div key={i} className={line.startsWith('#') ? 'text-primary font-bold' : ''}>
-                    {line}
-                  </div>
-                ))}
+              <div className="bg-muted p-4 rounded-md max-h-96 overflow-y-auto">
+                <MarkdownPreview content={selectedTemplate.content} />
               </div>
               
               <div className="mt-4 grid grid-cols-2 gap-4">

@@ -70,6 +70,47 @@ export async function askOpenRouter(prompt: string) {
   }
 }
 
+// Generate an image using the OpenRouter API
+export async function generateCampaignImage(prompt: string) {
+  try {
+    // Enhance the prompt to ensure it generates a cosmic-themed LGBTQ+ venue image
+    const enhancedPrompt = `Create a vibrant, colorful image for an LGBTQ+ venue called "${prompt}". 
+      The image should have a cosmic theme with stars, galaxies, or celestial elements. 
+      Use a color palette that includes pride rainbow colors. 
+      Make it suitable as a banner image for a crowdfunding campaign.
+      No text overlay needed. Digital art style with clean lines.`;
+    
+    const response = await fetch("https://openrouter.ai/api/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://rainbow-rise.replit.app/"
+      },
+      body: JSON.stringify({
+        model: "stability/stable-diffusion-xl", // Using Stable Diffusion XL for image generation
+        prompt: enhancedPrompt,
+        n: 1,
+        size: "1024x1024",
+        style: "vivid",
+        response_format: "b64_json"
+      })
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("OpenRouter image generation error:", errorData);
+      throw new Error(`OpenRouter image generation error: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data.data[0].b64_json; // Return base64 encoded image
+  } catch (error) {
+    console.error("Error generating image:", error);
+    throw error;
+  }
+}
+
 // Express route handler for the AI assistant
 export async function handleAssistantQuery(req: Request, res: Response) {
   const { query } = req.body;
@@ -84,5 +125,30 @@ export async function handleAssistantQuery(req: Request, res: Response) {
   } catch (error: any) {
     console.error("Assistant error:", error);
     res.status(500).json({ message: "Error processing your request", error: error.message });
+  }
+}
+
+// Express route handler for image generation
+export async function handleImageGeneration(req: Request, res: Response) {
+  const { prompt } = req.body;
+  
+  if (!prompt || typeof prompt !== 'string') {
+    return res.status(400).json({ message: "Prompt parameter is required" });
+  }
+  
+  try {
+    const imageBase64 = await generateCampaignImage(prompt);
+    res.json({ 
+      success: true, 
+      imageData: imageBase64,
+      imageUrl: `data:image/png;base64,${imageBase64}`
+    });
+  } catch (error: any) {
+    console.error("Image generation error:", error);
+    res.status(500).json({ 
+      success: false,
+      message: "Error generating image", 
+      error: error.message 
+    });
   }
 }

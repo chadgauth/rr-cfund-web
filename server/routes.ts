@@ -6,7 +6,7 @@ import {
   insertDonationSchema, 
   insertUserSchema
 } from "@shared/schema";
-import { handleAssistantQuery } from "./openRouter";
+import { handleAssistantQuery, handleImageGeneration } from "./openRouter";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 
@@ -131,6 +131,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // AI Assistant route
   app.post("/api/assistant", handleAssistantQuery);
+  
+  // AI Image Generation route
+  app.post("/api/generate-image", handleImageGeneration);
 
   const httpServer = createServer(app);
   return httpServer;
