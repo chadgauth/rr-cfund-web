@@ -1,62 +1,110 @@
 import { Link } from "wouter";
 import { RainbowButton } from "@/components/ui/rainbow-button";
-import { generateRainbowGradient, svgToDataURL } from "@/lib/imageUtils";
+import { CosmicBackground, CosmicText, GlowingText } from "@/components/ui/cosmic-background";
+import { generateRainbowGradient } from "@/lib/imageUtils";
+
+// Neon Planet SVG component
+const NeonPlanet = ({ className = "" }) => (
+  <div className={`relative ${className}`}>
+    <div className="absolute inset-0 rounded-full bg-pink-700 blur-xl opacity-50 animate-cosmic-slow"></div>
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="relative z-10 animate-float">
+      <defs>
+        <linearGradient id="planetGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FF66C4" />
+          <stop offset="100%" stopColor="#7B5FFB" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+      <circle cx="100" cy="100" r="80" fill="url(#planetGradient)" filter="url(#glow)" />
+      <path d="M30,100 Q60,70 100,80 Q140,90 170,100 Q140,130 100,120 Q60,110 30,100 Z" fill="#FF66C4" opacity="0.3" />
+      <circle cx="70" cy="70" r="15" fill="white" opacity="0.2" />
+      <circle cx="60" cy="60" r="8" fill="white" opacity="0.3" />
+    </svg>
+  </div>
+);
+
+// Star component
+const Star = ({ x, y, size, delay }) => (
+  <div 
+    className="absolute rounded-full bg-white animate-sparkle"
+    style={{
+      left: `${x}%`,
+      top: `${y}%`,
+      width: `${size}px`,
+      height: `${size}px`,
+      animationDelay: `${delay}s`,
+      filter: 'blur(0.5px)'
+    }}
+  />
+);
 
 const Hero = () => {
-  // Create rainbow gradient background as SVG
-  const rainbowGradientSvg = generateRainbowGradient();
-  const rainbowGradientUrl = svgToDataURL(rainbowGradientSvg);
+  // Generate random stars
+  const stars = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 3 + 1,
+    delay: Math.random() * 3
+  }));
   
   return (
-    <section className="relative overflow-hidden">
-      {/* Overlay with semi-transparent gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary to-[#3772FF] opacity-80 z-10"></div>
+    <CosmicBackground intensity="soft" className="min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Stars */}
+      {stars.map(star => (
+        <Star key={star.id} {...star} />
+      ))}
       
-      {/* Rainbow Background Pattern */}
-      <div 
-        className="absolute inset-0 w-full h-full bg-repeat"
-        style={{ 
-          backgroundImage: `url(${rainbowGradientUrl})`,
-          backgroundSize: "cover"
-        }}
-      ></div>
+      {/* Floating Planets */}
+      <NeonPlanet className="absolute w-32 h-32 right-[10%] top-[20%]" />
+      <NeonPlanet className="absolute w-20 h-20 left-[15%] top-[30%]" />
+      <NeonPlanet className="absolute w-16 h-16 right-[25%] bottom-[15%]" />
       
-      {/* City Silhouette */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-black opacity-20 z-5">
-        <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-          <path d="M0,40 L60,35 L120,45 L180,30 L240,45 L300,25 L360,45 L420,35 L480,50 L540,30 L600,40 L660,20 L720,50 L780,25 L840,45 L900,30 L960,50 L1020,25 L1080,45 L1140,30 L1200,50 L1260,25 L1320,40 L1380,30 L1440,40 L1440,100 L0,100 Z" fill="black"/>
-        </svg>
-      </div>
+      {/* Cosmic Rings */}
+      <div className="absolute w-[150%] h-[150%] border-[30px] border-fuchsia-600/10 rounded-full -top-[25%] -left-[25%] animate-cosmic-slow"></div>
+      <div className="absolute w-[130%] h-[130%] border-[20px] border-purple-600/20 rounded-full -top-[15%] -left-[15%] animate-cosmic-medium"></div>
       
-      <div className="container mx-auto px-4 py-24 md:py-36 relative z-20">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm p-6 rounded-2xl inline-block mb-6">
-            <div className="text-xl text-white font-semibold mb-1">Rainbow Rise</div>
+      <div className="container mx-auto px-4 py-24 md:py-36 relative z-30">
+        <div className="max-w-4xl mx-auto text-center">
+          {/* Futuristic badge */}
+          <div className="bg-gradient-to-r from-fuchsia-600/30 to-purple-600/30 backdrop-blur-md p-4 rounded-full inline-flex mb-6 border border-pink-500/50">
+            <div className="text-xl text-white font-bold px-4 py-1 border-2 border-pink-500/50 rounded-full animate-pulse">
+              <GlowingText>Rainbow Rise</GlowingText>
+            </div>
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 drop-shadow-lg">
-            Empowering Queer Spaces Across The Universe
+          <h1 className="text-5xl md:text-7xl font-black text-white mb-8 leading-tight">
+            <div className="mb-2">Empowering</div>
+            <div className="mb-2"><CosmicText className="text-6xl md:text-8xl">Queer Spaces</CosmicText></div>
+            <div>Across The Universe</div>
           </h1>
           
-          <p className="text-xl md:text-2xl text-white opacity-90 mb-10 drop-shadow-md">
-            Crowdfunding the future of LGBTQ+ venues and community spaces anywhere and everywhere in the cosmos.
+          <p className="text-xl md:text-2xl text-white opacity-90 mb-10 bg-black/30 backdrop-blur-sm p-6 rounded-xl inline-block">
+            Crowdfunding the future of LGBTQ+ venues and community spaces 
+            <br />
+            <GlowingText color="purple" className="text-2xl md:text-3xl font-bold italic mt-2">
+              anywhere and everywhere in the cosmos
+            </GlowingText>
           </p>
           
-          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
             <Link href="/campaigns">
-              <RainbowButton variant="primary" className="text-lg px-8 py-6">
+              <RainbowButton variant="primary" className="text-lg px-8 py-6 rounded-xl font-bold shadow-lg shadow-pink-500/30">
                 Explore Campaigns
               </RainbowButton>
             </Link>
             <Link href="/create-campaign">
-              <RainbowButton variant="secondary" className="text-lg px-8 py-6">
-                Start a Campaign
+              <RainbowButton variant="secondary" className="text-lg px-8 py-6 rounded-xl font-bold shadow-lg shadow-purple-500/30">
+                Create A Campaign
               </RainbowButton>
             </Link>
           </div>
         </div>
       </div>
-    </section>
+    </CosmicBackground>
   );
 };
 
