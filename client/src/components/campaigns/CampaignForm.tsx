@@ -307,7 +307,6 @@ const CampaignForm = () => {
                       <input 
                         type="hidden" 
                         {...field}
-                        value={field.value || ''}
                       />
                       <ImageGenerator 
                         prompt={form.watch("title") || ''} 
