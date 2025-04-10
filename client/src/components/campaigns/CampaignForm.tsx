@@ -7,6 +7,7 @@ import { insertCampaignSchema } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
+import { CampaignTemplates } from "./CampaignTemplates";
 
 import {
   Form,
@@ -37,6 +38,7 @@ const formSchema = insertCampaignSchema.extend({
   description: z.string().min(20, {
     message: "Description must be at least 20 characters.",
   }),
+  content: z.string().optional(),
   goal: z.coerce.number().min(1000, {
     message: "Funding goal must be at least $1,000.",
   }),
@@ -49,6 +51,7 @@ type FormValues = z.infer<typeof formSchema>;
 
 const CampaignForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showTemplates, setShowTemplates] = useState(true);
   const [_, navigate] = useLocation();
   const { toast } = useToast();
 
@@ -67,6 +70,15 @@ const CampaignForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues,
   });
+  
+  const applyTemplate = (template: any) => {
+    form.setValue("title", template.title);
+    form.setValue("description", template.description);
+    form.setValue("content", template.content);
+    form.setValue("goal", template.goal);
+    form.setValue("category", template.category);
+    setShowTemplates(false);
+  };
 
   const onSubmit = async (data: FormValues) => {
     setIsSubmitting(true);
@@ -97,7 +109,23 @@ const CampaignForm = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-3xl mx-auto">
+      {showTemplates ? (
+        <div className="mb-8">
+          <CampaignTemplates onSelect={applyTemplate} />
+        </div>
+      ) : (
+        <div className="mb-6 text-right">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowTemplates(true)}
+            className="text-sm"
+          >
+            Browse Templates
+          </Button>
+        </div>
+      )}
+      
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -132,6 +160,27 @@ const CampaignForm = () => {
                 </FormControl>
                 <FormDescription>
                   Tell the community about your space, what makes it special, and how it will serve the LGBTQ+ community.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Campaign Content</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Add detailed content for your campaign, including your story, goals, rewards, etc."
+                    className="min-h-64 font-mono text-sm"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  Markdown formatting is supported. Tell your cosmic story and how your space will shine in the queer universe.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
