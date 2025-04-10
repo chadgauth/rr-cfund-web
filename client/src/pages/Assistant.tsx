@@ -1,15 +1,9 @@
 import { AIChatAssistant } from "@/components/assistant/AIChatAssistant";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Helmet } from 'react-helmet';
 
 export default function Assistant() {
   return (
     <div className="container mx-auto py-8 px-4">
-      <Helmet>
-        <title>Rainbow Guide Assistant | Rainbow Rise</title>
-        <meta name="description" content="Get help from our cosmic AI assistant to find and support queer spaces." />
-      </Helmet>
-      
       <div className="max-w-3xl mx-auto mb-8">
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-center">
           Rainbow Guide Assistant
@@ -58,9 +52,9 @@ export default function Assistant() {
               </CardHeader>
               <div className="mt-2 space-y-2 text-sm">
                 <p>
-                  Rainbow Guide is built using OpenRouter, connecting to state-of-the-art 
-                  AI models specifically tuned to understand LGBTQ+ community needs and the 
-                  importance of safe, inclusive spaces.
+                  Rainbow Guide is built using OpenRouter with the Quasar Alpha model, 
+                  specifically tuned to understand LGBTQ+ community needs and the 
+                  importance of safe, inclusive spaces across the universe.
                 </p>
                 <p className="text-muted-foreground italic">
                   While our AI assistant is knowledgeable and helpful, it's still evolving. 

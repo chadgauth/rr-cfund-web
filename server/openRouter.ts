@@ -11,7 +11,7 @@ export async function askOpenRouter(prompt: string) {
         "HTTP-Referer": "https://rainbow-rise.replit.app/", // Replace with the actual domain when deployed
       },
       body: JSON.stringify({
-        model: "anthropic/claude-3-sonnet:beta", // Using Claude for its well-rounded capabilities
+        model: "openrouter/quasar-alpha", // Using Quasar Alpha as requested
         messages: [
           {
             role: "system",
