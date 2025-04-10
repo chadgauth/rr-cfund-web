@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { CampaignTemplates } from "./CampaignTemplates";
 import { MarkdownEditor } from "@/components/ui/md-editor";
+import { ImageGenerator } from "./ImageGenerator";
 
 import {
   Form,
@@ -53,6 +54,7 @@ type FormValues = z.infer<typeof formSchema>;
 const CampaignForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTemplates, setShowTemplates] = useState(true);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [_, navigate] = useLocation();
   const { toast } = useToast();
 
@@ -80,6 +82,12 @@ const CampaignForm = () => {
     form.setValue("goal", template.goal);
     form.setValue("category", template.category);
     setShowTemplates(false);
+  };
+  
+  // Handle the generated image URL
+  const handleImageGenerated = (imageUrl: string) => {
+    setPreviewImage(imageUrl);
+    form.setValue("imageUrl", imageUrl);
   };
 
   const onSubmit = async (data: FormValues) => {
@@ -276,6 +284,44 @@ const CampaignForm = () => {
               )}
             />
           </div>
+          
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Campaign Image</FormLabel>
+                <div className="space-y-4">
+                  {previewImage && (
+                    <div className="relative aspect-video w-full rounded-xl overflow-hidden border">
+                      <img 
+                        src={previewImage} 
+                        alt="Campaign preview" 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  
+                  <FormControl>
+                    <div className="flex items-center gap-4">
+                      <input 
+                        type="hidden" 
+                        {...field}
+                      />
+                      <ImageGenerator 
+                        prompt={form.watch("title") || ''} 
+                        onImageGenerated={handleImageGenerated} 
+                      />
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Generate a cosmic-themed image for your campaign using AI, or use our default rainbow gradient.
+                  </FormDescription>
+                  <FormMessage />
+                </div>
+              </FormItem>
+            )}
+          />
 
           <div className="flex justify-end space-x-4">
             <Button
