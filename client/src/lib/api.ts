@@ -1,6 +1,13 @@
 import { apiRequest } from "./queryClient";
 import { Campaign, Donation } from "@shared/schema";
 
+// AI Assistant API
+export const askAssistant = async (query: string): Promise<string> => {
+  const response = await apiRequest("POST", "/api/assistant", { query });
+  const data = await response.json();
+  return data.response;
+};
+
 // Campaign API
 export const fetchCampaigns = async (): Promise<Campaign[]> => {
   const response = await apiRequest("GET", "/api/campaigns");
