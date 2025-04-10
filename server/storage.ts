@@ -33,232 +33,220 @@ export interface IStorage {
   createLocation(location: InsertLocation): Promise<Location>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private campaigns: Map<number, Campaign>;
-  private donations: Map<number, Donation>;
-  private testimonials: Map<number, Testimonial>;
-  private locations: Map<number, Location>;
-  
-  private userIdCounter: number;
-  private campaignIdCounter: number;
-  private donationIdCounter: number;
-  private testimonialIdCounter: number;
-  private locationIdCounter: number;
+import { db } from "./db";
+import { eq, and } from "drizzle-orm";
 
+export class DatabaseStorage implements IStorage {
   constructor() {
-    this.users = new Map();
-    this.campaigns = new Map();
-    this.donations = new Map();
-    this.testimonials = new Map();
-    this.locations = new Map();
-    
-    this.userIdCounter = 1;
-    this.campaignIdCounter = 1;
-    this.donationIdCounter = 1;
-    this.testimonialIdCounter = 1;
-    this.locationIdCounter = 1;
-    
-    // Initialize with sample testimonials
-    this.initializeTestimonials();
+    // Ensure we have initial data by seeding the database
+    this.seedInitialData();
   }
-
+  
   // User operations
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const result = await db.select().from(users).where(eq(users.id, id));
+    return result[0];
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const result = await db.select().from(users).where(eq(users.username, username));
+    return result[0];
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.userIdCounter++;
-    const user = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const result = await db.insert(users).values(insertUser).returning();
+    return result[0];
   }
   
   // Campaign operations
   async getCampaigns(): Promise<Campaign[]> {
-    return Array.from(this.campaigns.values());
+    return db.select().from(campaigns);
   }
   
   async getCampaign(id: number): Promise<Campaign | undefined> {
-    return this.campaigns.get(id);
+    const result = await db.select().from(campaigns).where(eq(campaigns.id, id));
+    return result[0];
   }
   
   async getCampaignsByCategory(category: string): Promise<Campaign[]> {
-    return Array.from(this.campaigns.values()).filter(
-      (campaign) => campaign.category === category,
-    );
+    return db.select().from(campaigns).where(eq(campaigns.category, category));
   }
   
   async createCampaign(insertCampaign: InsertCampaign): Promise<Campaign> {
-    const id = this.campaignIdCounter++;
     const now = new Date();
-    const campaign: Campaign = { 
-      ...insertCampaign, 
-      id, 
-      raised: 0, 
-      backers: 0,
-      createdAt: now
-    };
-    this.campaigns.set(id, campaign);
-    return campaign;
+    
+    const result = await db.insert(campaigns).values({
+      ...insertCampaign,
+      createdAt: now,
+      raised: 0,
+      backers: 0
+    }).returning();
+    
+    return result[0];
   }
   
   async updateCampaign(id: number, updates: Partial<Campaign>): Promise<Campaign | undefined> {
-    const campaign = this.campaigns.get(id);
-    if (!campaign) return undefined;
+    const result = await db.update(campaigns)
+      .set(updates)
+      .where(eq(campaigns.id, id))
+      .returning();
     
-    const updatedCampaign = { ...campaign, ...updates };
-    this.campaigns.set(id, updatedCampaign);
-    return updatedCampaign;
+    return result[0];
   }
   
   // Donation operations
   async getDonationsByCampaign(campaignId: number): Promise<Donation[]> {
-    return Array.from(this.donations.values()).filter(
-      (donation) => donation.campaignId === campaignId,
-    );
+    return db.select().from(donations).where(eq(donations.campaignId, campaignId));
   }
   
   async createDonation(insertDonation: InsertDonation): Promise<Donation> {
-    const id = this.donationIdCounter++;
     const now = new Date();
-    const donation: Donation = { ...insertDonation, id, createdAt: now };
-    this.donations.set(id, donation);
     
-    // Update campaign raised amount and backers count
-    const campaign = this.campaigns.get(donation.campaignId);
+    // Create the donation
+    const result = await db.insert(donations).values({
+      ...insertDonation,
+      createdAt: now
+    }).returning();
+    
+    // Update the campaign stats
+    const campaign = await this.getCampaign(insertDonation.campaignId);
     if (campaign) {
-      const raised = campaign.raised + donation.amount;
-      const backers = campaign.backers + 1;
-      this.campaigns.set(donation.campaignId, { ...campaign, raised, backers });
+      await this.updateCampaign(campaign.id, {
+        raised: (campaign.raised || 0) + insertDonation.amount,
+        backers: (campaign.backers || 0) + 1
+      });
     }
     
-    return donation;
+    return result[0];
   }
   
   // Testimonial operations
   async getTestimonials(): Promise<Testimonial[]> {
-    return Array.from(this.testimonials.values());
+    return db.select().from(testimonials);
   }
   
   async createTestimonial(insertTestimonial: InsertTestimonial): Promise<Testimonial> {
-    const id = this.testimonialIdCounter++;
-    const testimonial: Testimonial = { ...insertTestimonial, id };
-    this.testimonials.set(id, testimonial);
-    return testimonial;
+    const result = await db.insert(testimonials).values(insertTestimonial).returning();
+    return result[0];
   }
   
   // Location operations
   async getLocations(): Promise<Location[]> {
-    return Array.from(this.locations.values());
+    return db.select().from(locations);
   }
   
   async getLocationsByCampaign(campaignId: number): Promise<Location[]> {
-    return Array.from(this.locations.values()).filter(
-      (location) => location.campaignId === campaignId,
-    );
+    return db.select().from(locations).where(eq(locations.campaignId, campaignId));
   }
   
   async createLocation(insertLocation: InsertLocation): Promise<Location> {
-    const id = this.locationIdCounter++;
-    const location: Location = { ...insertLocation, id };
-    this.locations.set(id, location);
-    return location;
+    const result = await db.insert(locations).values(insertLocation).returning();
+    return result[0];
   }
   
-  // Initialize sample data
-  private initializeTestimonials() {
-    const testimonials = [
-      {
-        id: this.testimonialIdCounter++,
-        name: "Jamie Rodriguez",
-        role: "Founder, Spectrum Lounge",
-        content: "Rainbow Rise gave us the platform we needed to connect with the community and raise funds for our bar. The support has been overwhelming — we can't wait to open our doors!",
-        imageUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80"
-      },
-      {
-        id: this.testimonialIdCounter++,
-        name: "Alex Kim",
-        role: "Backer & Community Member",
-        content: "I've backed three campaigns on Rainbow Rise because I believe in preserving queer spaces in Austin. It feels amazing to be part of something so important to our community.",
-        imageUrl: "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80"
+  // Private method to seed initial data
+  private async seedInitialData() {
+    try {
+      // Check if we already have data
+      const existingTestimonials = await db.select().from(testimonials);
+      const existingCampaigns = await db.select().from(campaigns);
+      
+      // Only seed if we don't have data
+      if (existingTestimonials.length === 0) {
+        await this.seedTestimonials();
       }
-    ];
-    
-    testimonials.forEach(testimonial => {
-      this.testimonials.set(testimonial.id, testimonial);
-    });
-    
-    // Initialize sample campaigns
-    this.initializeCampaigns();
+      
+      if (existingCampaigns.length === 0) {
+        await this.seedCampaigns();
+      }
+      
+      if (await this.getUserByUsername("demo") === undefined) {
+        await this.seedUsers();
+      }
+    } catch (error) {
+      console.error("Error seeding data:", error);
+    }
   }
   
-  private initializeCampaigns() {
-    const campaigns = [
-      {
-        id: this.campaignIdCounter++,
-        title: "Spectrum Lounge",
-        description: "A new inclusive cocktail bar with a focus on craft drinks and community events in East Austin.",
-        category: "Bar & Lounge",
-        goal: 75000,
-        raised: 47500,
-        backers: 214,
-        daysLeft: 14,
-        imageUrl: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
-        location: "East Austin",
-        createdAt: new Date()
-      },
-      {
-        id: this.campaignIdCounter++,
-        title: "Rainbow Hub",
-        description: "A multi-purpose community center offering resources, meeting spaces, and support for LGBTQ+ individuals.",
-        category: "Community Center",
-        goal: 120000,
-        raised: 89250,
-        backers: 432,
-        daysLeft: 21,
-        imageUrl: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
-        location: "Central Austin",
-        createdAt: new Date()
-      },
-      {
-        id: this.campaignIdCounter++,
-        title: "Neon Nights",
-        description: "A vibrant dance club with multiple floors offering diverse music styles and inclusive theme nights.",
-        category: "Dance Club",
-        goal: 150000,
-        raised: 32800,
-        backers: 165,
-        daysLeft: 45,
-        imageUrl: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
-        location: "South Austin",
-        createdAt: new Date()
-      }
-    ];
-    
-    campaigns.forEach(campaign => {
-      this.campaigns.set(campaign.id, campaign);
-    });
-    
-    // Add a default user
-    this.users.set(1, {
-      id: 1,
+  private async seedUsers() {
+    await db.insert(users).values({
       username: "demo",
       password: "password",
       email: "demo@example.com",
       name: "Demo User"
     });
   }
+  
+  private async seedTestimonials() {
+    const testimonialsData = [
+      {
+        name: "Jamie Rodriguez",
+        role: "Founder, Spectrum Lounge",
+        content: "Rainbow Rise gave us the platform we needed to connect with the community and raise funds for our bar across the galaxy. The support has been overwhelming — we can't wait to open our cosmic doors!",
+        imageUrl: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80"
+      },
+      {
+        name: "Alex Kim",
+        role: "Backer & Community Member",
+        content: "I've backed three campaigns on Rainbow Rise because I believe in preserving queer spaces throughout the universe. It feels amazing to be part of something so important to our multidimensional community.",
+        imageUrl: "https://images.unsplash.com/photo-1542206395-9feb3edaa68d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80"
+      }
+    ];
+    
+    for (const testimonial of testimonialsData) {
+      await db.insert(testimonials).values(testimonial);
+    }
+  }
+  
+  private async seedCampaigns() {
+    const now = new Date();
+    
+    // Campaign data separately
+    await db.insert(campaigns).values({
+      title: "Spectrum Lounge",
+      description: "A new inclusive cocktail bar with a focus on craft drinks and community events serving queer communities across all dimensions.",
+      category: "Bar & Lounge",
+      goal: 75000,
+      raised: 47500,
+      backers: 214,
+      imageUrl: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+      userId: 1,
+      location: "East Austin and Beyond",
+      createdAt: now,
+      deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+      ownerName: "Riley Johnson"
+    });
+    
+    await db.insert(campaigns).values({
+      title: "Cosmic Rainbow Hub",
+      description: "A multi-purpose community center offering resources, meeting spaces, and support for LGBTQ+ individuals across all galaxies.",
+      category: "Community Center",
+      goal: 120000,
+      raised: 89250,
+      backers: 432,
+      imageUrl: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+      userId: 1,
+      location: "Cosmic Central",
+      createdAt: now,
+      deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
+      ownerName: "Jordan Smith"
+    });
+    
+    await db.insert(campaigns).values({
+      title: "Interstellar Neon Nights",
+      description: "A vibrant dance club with multiple dimensions offering diverse music styles and inclusive theme nights for all beings.",
+      category: "Dance Club",
+      goal: 150000,
+      raised: 32800,
+      backers: 165,
+      imageUrl: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+      userId: 1,
+      location: "Universal South",
+      createdAt: now,
+      deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+      ownerName: "Sam Wilson"
+    });
+  }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
