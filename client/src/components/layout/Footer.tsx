@@ -59,28 +59,28 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-4">Campaigns</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/campaigns">
-                  <a className="text-gray-400 hover:text-white transition">Browse All</a>
+                <Link href="/campaigns" className="text-gray-400 hover:text-white transition">
+                  Browse All
                 </Link>
               </li>
               <li>
-                <Link href="/campaigns?category=Bars+%26+Clubs">
-                  <a className="text-gray-400 hover:text-white transition">Bars & Clubs</a>
+                <Link href="/campaigns?category=Bars+%26+Clubs" className="text-gray-400 hover:text-white transition">
+                  Bars & Clubs
                 </Link>
               </li>
               <li>
-                <Link href="/campaigns?category=Community+Spaces">
-                  <a className="text-gray-400 hover:text-white transition">Community Spaces</a>
+                <Link href="/campaigns?category=Community+Spaces" className="text-gray-400 hover:text-white transition">
+                  Community Spaces
                 </Link>
               </li>
               <li>
-                <Link href="/campaigns?category=Cafes+%26+Restaurants">
-                  <a className="text-gray-400 hover:text-white transition">Cafes & Restaurants</a>
+                <Link href="/campaigns?category=Cafes+%26+Restaurants" className="text-gray-400 hover:text-white transition">
+                  Cafes & Restaurants
                 </Link>
               </li>
               <li>
-                <Link href="/campaigns?category=Retail+%26+Services">
-                  <a className="text-gray-400 hover:text-white transition">Retail & Services</a>
+                <Link href="/campaigns?category=Retail+%26+Services" className="text-gray-400 hover:text-white transition">
+                  Retail & Services
                 </Link>
               </li>
             </ul>
@@ -90,28 +90,28 @@ const Footer = () => {
             <h4 className="font-bold text-lg mb-4">About</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/about">
-                  <a className="text-gray-400 hover:text-white transition">Our Mission</a>
+                <Link href="/about" className="text-gray-400 hover:text-white transition">
+                  Our Mission
                 </Link>
               </li>
               <li>
-                <Link href="/about#how-it-works">
-                  <a className="text-gray-400 hover:text-white transition">How It Works</a>
+                <Link href="/about#how-it-works" className="text-gray-400 hover:text-white transition">
+                  How It Works
                 </Link>
               </li>
               <li>
-                <Link href="/about#success-stories">
-                  <a className="text-gray-400 hover:text-white transition">Success Stories</a>
+                <Link href="/about#success-stories" className="text-gray-400 hover:text-white transition">
+                  Success Stories
                 </Link>
               </li>
               <li>
-                <Link href="/about#team">
-                  <a className="text-gray-400 hover:text-white transition">Team</a>
+                <Link href="/about#team" className="text-gray-400 hover:text-white transition">
+                  Team
                 </Link>
               </li>
               <li>
-                <Link href="/about#faq">
-                  <a className="text-gray-400 hover:text-white transition">FAQ</a>
+                <Link href="/about#faq" className="text-gray-400 hover:text-white transition">
+                  FAQ
                 </Link>
               </li>
             </ul>
@@ -129,13 +129,13 @@ const Footer = () => {
                 <span className="text-gray-400">hello@rainbowrise.org</span>
               </li>
               <li>
-                <Link href="/contact">
-                  <a className="text-gray-400 hover:text-white transition">Contact Form</a>
+                <Link href="/contact" className="text-gray-400 hover:text-white transition">
+                  Contact Form
                 </Link>
               </li>
               <li>
-                <Link href="/contact#support">
-                  <a className="text-gray-400 hover:text-white transition">Support</a>
+                <Link href="/contact#support" className="text-gray-400 hover:text-white transition">
+                  Support
                 </Link>
               </li>
             </ul>
