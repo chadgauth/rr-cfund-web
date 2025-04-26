@@ -150,19 +150,13 @@ const Hero = () => {
               
               <div className="flex flex-wrap gap-3">
                 <Link href="/campaigns">
-                  <RainbowButton 
-                    variant="primary" 
-                    className="px-6 py-2.5 text-sm font-extrabold tracking-wide rounded-lg uppercase shadow-lg backdrop-blur-sm bg-opacity-90"
-                  >
-                    ✨ Explore Campaigns
+                  <RainbowButton variant="primary" className="px-5 py-2 text-sm">
+                    Explore Campaigns
                   </RainbowButton>
                 </Link>
                 <Link href="/create-campaign">
-                  <RainbowButton 
-                    variant="secondary" 
-                    className="px-6 py-2.5 text-sm font-extrabold tracking-wide rounded-lg uppercase shadow-md border-2 border-white border-opacity-30"
-                  >
-                    + Start a Campaign
+                  <RainbowButton variant="secondary" className="px-5 py-2 text-sm">
+                    Start a Campaign
                   </RainbowButton>
                 </Link>
               </div>
@@ -205,15 +199,9 @@ const Hero = () => {
                 })}
               </div>
               
-              <Link 
-                href="/campaigns" 
-                className="text-purple-600 text-sm font-extrabold flex items-center mt-4 group"
-              >
-                <span className="relative">
-                  View all campaigns
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-purple-300 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></span>
-                </span>
-                <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-1 transition-transform duration-300" />
+              <Link href="/campaigns" className="text-purple-600 text-sm font-medium flex items-center mt-3 hover:underline">
+                View all campaigns
+                <ArrowRight className="ml-1 h-3 w-3" />
               </Link>
             </div>
             
