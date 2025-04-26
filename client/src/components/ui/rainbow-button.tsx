@@ -1,54 +1,32 @@
-import * as React from "react";
-import { Button } from "@/components/ui/button";
+import { ButtonHTMLAttributes, forwardRef } from "react";
 import { cn } from "@/lib/utils";
-import { pastelColors } from "@/lib/colors";
 
-type RainbowButtonProps = React.ComponentProps<typeof Button> & {
+export interface RainbowButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary";
-};
-
-export function RainbowButton({
-  className,
-  variant = "primary",
-  ...props
-}: RainbowButtonProps) {
-  const getGradientStyle = () => {
-    if (variant === "primary") {
-      return {
-        background: `linear-gradient(to right, ${pastelColors.lavender}, ${pastelColors.pink})`,
-        color: "white",
-        border: "none",
-        transition: "all 0.3s ease",
-        boxShadow: "0 2px 10px rgba(200, 171, 220, 0.5)"
-      };
-    } else {
-      return {
-        background: "white",
-        color: pastelColors.mauve,
-        border: `2px solid ${pastelColors.lavender}`,
-        transition: "all 0.3s ease"
-      };
-    }
-  };
-
-  return (
-    <Button
-      className={cn(
-        "font-medium relative overflow-hidden group", 
-        className
-      )}
-      style={getGradientStyle()}
-      {...props}
-    >
-      {variant === "primary" && (
-        <span className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-white" />
-      )}
-      {variant === "secondary" && (
-        <span className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-10 transition-opacity duration-300" 
-          style={{ background: `linear-gradient(to right, ${pastelColors.lavender}, ${pastelColors.pink})` }} 
-        />
-      )}
-      {props.children}
-    </Button>
-  );
 }
+
+const RainbowButton = forwardRef<HTMLButtonElement, RainbowButtonProps>(
+  ({ className, variant = "primary", children, ...props }, ref) => {
+    return (
+      <button
+        className={cn(
+          "px-6 py-3 rounded-lg font-bold transition-all duration-300 shadow-md",
+          "tracking-wide hover:-translate-y-0.5 focus:ring-2 focus:ring-opacity-50 focus:outline-none",
+          "active:scale-95 active:shadow-inner transform-gpu",
+          variant === "primary" 
+            ? "bg-gradient-to-r from-[#E71D36] via-[#FF8C42] via-[#FFDD4A] via-[#70C1B3] via-[#3772FF] to-[#6A0DAD] text-white hover:shadow-lg hover:shadow-purple-500/20 focus:ring-purple-500" 
+            : "bg-white text-primary border border-purple-100 hover:bg-purple-50 hover:border-purple-200 focus:ring-purple-300",
+          className
+        )}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+
+RainbowButton.displayName = "RainbowButton";
+
+export { RainbowButton };
