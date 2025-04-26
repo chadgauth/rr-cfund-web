@@ -1,30 +1,54 @@
-import { ButtonHTMLAttributes, forwardRef } from "react";
+import * as React from "react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { pastelColors } from "@/lib/colors";
 
-export interface RainbowButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+type RainbowButtonProps = React.ComponentProps<typeof Button> & {
   variant?: "primary" | "secondary";
+};
+
+export function RainbowButton({
+  className,
+  variant = "primary",
+  ...props
+}: RainbowButtonProps) {
+  const getGradientStyle = () => {
+    if (variant === "primary") {
+      return {
+        background: `linear-gradient(to right, ${pastelColors.lavender}, ${pastelColors.pink})`,
+        color: "white",
+        border: "none",
+        transition: "all 0.3s ease",
+        boxShadow: "0 2px 10px rgba(200, 171, 220, 0.5)"
+      };
+    } else {
+      return {
+        background: "white",
+        color: pastelColors.mauve,
+        border: `2px solid ${pastelColors.lavender}`,
+        transition: "all 0.3s ease"
+      };
+    }
+  };
+
+  return (
+    <Button
+      className={cn(
+        "font-medium relative overflow-hidden group", 
+        className
+      )}
+      style={getGradientStyle()}
+      {...props}
+    >
+      {variant === "primary" && (
+        <span className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-white" />
+      )}
+      {variant === "secondary" && (
+        <span className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-10 transition-opacity duration-300" 
+          style={{ background: `linear-gradient(to right, ${pastelColors.lavender}, ${pastelColors.pink})` }} 
+        />
+      )}
+      {props.children}
+    </Button>
+  );
 }
-
-const RainbowButton = forwardRef<HTMLButtonElement, RainbowButtonProps>(
-  ({ className, variant = "primary", children, ...props }, ref) => {
-    return (
-      <button
-        className={cn(
-          "px-8 py-4 rounded-xl font-bold transition-transform hover:-translate-y-0.5 hover:shadow-lg",
-          variant === "primary" 
-            ? "bg-gradient-to-r from-[#E71D36] via-[#FF8C42] via-[#FFDD4A] via-[#70C1B3] via-[#3772FF] to-[#6A0DAD] text-white" 
-            : "bg-white text-primary",
-          className
-        )}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </button>
-    );
-  }
-);
-
-RainbowButton.displayName = "RainbowButton";
-
-export { RainbowButton };

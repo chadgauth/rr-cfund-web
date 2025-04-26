@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import { generateAvatarSvg, generateRainbowGradient, svgToDataURL } from "@/lib/imageUtils";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { pastelColors, pastelGradients } from "@/lib/colors";
 
 // Top campaigns data
 const topCampaigns = [
@@ -44,10 +45,10 @@ const Hero = () => {
   // Generate images for placeholders
   const generateImage = (title: string) => {
     // Custom campaign placeholder generator
-    const generateSimplePlaceholder = (text: string) => {
-      // Colors for the gradient
-      const color1 = '#8E44AD'; // Purple
-      const color2 = '#3498DB'; // Blue
+    const generatePastelPlaceholder = (text: string) => {
+      // Get consistent colors based on campaign title
+      const color1 = pastelColors.lavender;
+      const color2 = pastelColors.babyBlue;
       
       // Create short title for display
       const displayTitle = text.length > 20 ? text.substring(0, 20) + '...' : text;
@@ -60,23 +61,37 @@ const Hero = () => {
               <stop offset="0%" stop-color="${color1}" />
               <stop offset="100%" stop-color="${color2}" />
             </linearGradient>
+            <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.3" flood-color="white" />
+            </filter>
           </defs>
-          <rect width="600" height="400" fill="url(#grad)" />
-          <text 
-            x="300" 
-            y="200" 
-            font-family="Arial, sans-serif" 
-            font-size="32" 
-            font-weight="bold" 
-            text-anchor="middle" 
-            fill="white"
-          >${displayTitle}</text>
+          <rect width="600" height="400" fill="url(#grad)" rx="20" ry="20" />
+          
+          <!-- Pattern overlay -->
+          <g opacity="0.1">
+            ${Array.from({ length: 10 }).map((_, i) => 
+              `<circle cx="${Math.random() * 600}" cy="${Math.random() * 400}" r="${Math.random() * 30 + 10}" fill="white" />`
+            ).join('')}
+          </g>
+          
+          <!-- Campaign title -->
+          <g filter="url(#shadow)">
+            <text 
+              x="300" 
+              y="200" 
+              font-family="Arial, sans-serif" 
+              font-size="32" 
+              font-weight="bold" 
+              text-anchor="middle" 
+              fill="white"
+            >${displayTitle}</text>
+          </g>
         </svg>
       `;
       return svg;
     };
     
-    const placeholder = generateSimplePlaceholder(title);
+    const placeholder = generatePastelPlaceholder(title);
     return svgToDataURL(placeholder);
   };
   
@@ -86,12 +101,17 @@ const Hero = () => {
   );
   
   return (
-    <section className="py-6 bg-gradient-to-br from-purple-50 to-pink-50">
+    <section className="py-6" style={{ background: `linear-gradient(to bottom right, ${pastelColors.lavender}20, ${pastelColors.pinkLight}30)` }}>
       <div className="container mx-auto px-4">
         {/* Bento Box Layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Main Banner Box */}
-          <div className="md:col-span-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl overflow-hidden relative">
+          <div 
+            className="md:col-span-2 rounded-xl overflow-hidden relative shadow-md" 
+            style={{ 
+              background: `linear-gradient(to right, ${pastelColors.lavender}, ${pastelColors.pink})` 
+            }}
+          >
             <div className="absolute inset-0 opacity-15 mix-blend-overlay">
               <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <defs>
@@ -101,13 +121,13 @@ const Hero = () => {
                   </radialGradient>
                 </defs>
                 <rect width="100" height="100" fill="url(#stars)" />
-                {/* Stars */}
+                {/* Bubbles/stars */}
                 {Array.from({ length: 30 }).map((_, i) => (
                   <circle 
                     key={i}
                     cx={Math.random() * 100}
                     cy={Math.random() * 100}
-                    r={Math.random() * 0.5 + 0.2}
+                    r={Math.random() * 0.7 + 0.3}
                     fill="white"
                     className={i % 2 === 0 ? "animate-pulse" : ""}
                   />
@@ -166,8 +186,8 @@ const Hero = () => {
           {/* Right Column */}
           <div className="md:col-span-1 space-y-4">
             {/* Top Campaigns */}
-            <div className="bg-white rounded-xl p-5 shadow-sm">
-              <h3 className="text-lg font-bold mb-3 text-purple-800">Top Campaigns</h3>
+            <div className="bg-white rounded-xl p-5 shadow-sm" style={{ backgroundColor: `${pastelColors.peach}25` }}>
+              <h3 className="text-lg font-bold mb-3" style={{ color: pastelColors.mauve }}>Top Campaigns</h3>
               
               <div className="space-y-3">
                 {topCampaigns.map((campaign, index) => {
@@ -176,21 +196,24 @@ const Hero = () => {
                   
                   return (
                     <Link key={index} href={`/campaigns/${campaign.id}`}>
-                      <div className="flex items-center gap-3 hover:bg-purple-50 p-2 rounded-lg transition-colors">
-                        <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                      <div className="flex items-center gap-3 hover:bg-white hover:bg-opacity-60 p-2 rounded-lg transition-colors">
+                        <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 shadow-sm">
                           <img src={campaignImage} alt={campaign.title} className="w-full h-full object-cover" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-sm truncate">{campaign.title}</h4>
-                          <div className="w-full bg-gray-200 rounded-full h-1.5 my-1">
+                          <h4 className="font-medium text-sm truncate" style={{ color: pastelColors.mauve }}>{campaign.title}</h4>
+                          <div className="w-full bg-white bg-opacity-50 rounded-full h-1.5 my-1">
                             <div 
-                              className="bg-gradient-to-r from-purple-500 to-pink-500 h-1.5 rounded-full" 
-                              style={{ width: `${progress}%` }}
+                              className="h-1.5 rounded-full" 
+                              style={{ 
+                                width: `${progress}%`,
+                                background: `linear-gradient(to right, ${pastelColors.lavender}, ${pastelColors.pink})`
+                              }}
                             ></div>
                           </div>
-                          <div className="flex justify-between text-xs text-gray-500">
-                            <span>${campaign.raised.toLocaleString()}</span>
-                            <span>{progress}%</span>
+                          <div className="flex justify-between text-xs opacity-70">
+                            <span style={{ color: pastelColors.mauve }}>${campaign.raised.toLocaleString()}</span>
+                            <span style={{ color: pastelColors.mauve }}>{progress}%</span>
                           </div>
                         </div>
                       </div>
@@ -199,31 +222,31 @@ const Hero = () => {
                 })}
               </div>
               
-              <Link href="/campaigns" className="text-purple-600 text-sm font-medium flex items-center mt-3 hover:underline">
+              <Link href="/campaigns" className="text-sm font-medium flex items-center mt-3 hover:underline" style={{ color: pastelColors.mauve }}>
                 View all campaigns
                 <ArrowRight className="ml-1 h-3 w-3" />
               </Link>
             </div>
             
             {/* Quick Stats */}
-            <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl p-5">
-              <h3 className="text-lg font-bold mb-3 text-purple-800">Our Impact</h3>
+            <div className="rounded-xl p-5 shadow-sm" style={{ background: `linear-gradient(to bottom right, ${pastelColors.mintGreen}40, ${pastelColors.babyBlue}40)` }}>
+              <h3 className="text-lg font-bold mb-3" style={{ color: pastelColors.mauve }}>Our Impact</h3>
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-white bg-opacity-60 p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-purple-700">28+</div>
-                  <div className="text-xs text-purple-600">Venues Funded</div>
+                  <div className="text-2xl font-bold" style={{ color: pastelColors.lavender }}>28+</div>
+                  <div className="text-xs opacity-70" style={{ color: pastelColors.mauve }}>Venues Funded</div>
                 </div>
                 <div className="bg-white bg-opacity-60 p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-pink-600">$321K</div>
-                  <div className="text-xs text-pink-500">Total Raised</div>
+                  <div className="text-2xl font-bold" style={{ color: pastelColors.pink }}>$321K</div>
+                  <div className="text-xs opacity-70" style={{ color: pastelColors.mauve }}>Total Raised</div>
                 </div>
                 <div className="bg-white bg-opacity-60 p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">3.7K+</div>
-                  <div className="text-xs text-blue-500">Supporters</div>
+                  <div className="text-2xl font-bold" style={{ color: pastelColors.babyBlue }}>3.7K+</div>
+                  <div className="text-xs opacity-70" style={{ color: pastelColors.mauve }}>Supporters</div>
                 </div>
                 <div className="bg-white bg-opacity-60 p-3 rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">12</div>
-                  <div className="text-xs text-green-500">Cities</div>
+                  <div className="text-2xl font-bold" style={{ color: pastelColors.mintGreen }}>12</div>
+                  <div className="text-xs opacity-70" style={{ color: pastelColors.mauve }}>Cities</div>
                 </div>
               </div>
             </div>
