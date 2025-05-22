@@ -49,7 +49,7 @@ export function MeetTheTeam() {
       pronouns: "he/him",
       bio: "As our beloved CAICO (pronounced like the friendly ghost!), Alan ensures all our AI systems are as queer-friendly as our physical spaces. He specializes in teaching neural networks to recognize and celebrate cosmic queerness in all its forms.",
       quirk: "His name abbreviates to A.S.S. and he refuses to let anyone forget it.",
-      image: "/alan-profile.png",
+      image: "/public/alan-profile.png",
       socialLinks: {
         twitter: "#",
         linkedin: "#",
