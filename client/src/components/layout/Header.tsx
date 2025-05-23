@@ -83,17 +83,17 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.profileImageUrl || ""} alt={user.firstName || "User"} />
+                      <AvatarImage src={(user as any).profileImageUrl || ""} alt={(user as any).firstName || "User"} />
                       <AvatarFallback>
-                        {user.firstName?.[0] || user.email?.[0] || "U"}
+                        {(user as any).firstName?.[0] || (user as any).email?.[0] || "U"}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56" align="end" forceMount>
                   <DropdownMenuItem className="flex-col items-start">
-                    <div className="font-medium">{user.firstName} {user.lastName}</div>
-                    <div className="text-xs text-muted-foreground">{user.email}</div>
+                    <div className="font-medium">{(user as any).firstName} {(user as any).lastName}</div>
+                    <div className="text-xs text-muted-foreground">{(user as any).email}</div>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => window.location.href = '/api/logout'}>
                     <LogOut className="mr-2 h-4 w-4" />

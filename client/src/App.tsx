@@ -21,19 +21,17 @@ function Router() {
 
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Home} />
-          <Route path="/campaigns" component={Campaigns} />
-          <Route path="/campaigns/:id" component={CampaignDetail} />
-          <Route path="/create-campaign" component={CreateCampaign} />
-          <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
-          <Route path="/assistant" component={Assistant} />
-        </>
-      )}
+      {/* Public routes available to everyone */}
+      <Route path="/" component={isAuthenticated ? Home : Landing} />
+      <Route path="/campaigns" component={Campaigns} />
+      <Route path="/campaigns/:id" component={CampaignDetail} />
+      <Route path="/about" component={About} />
+      <Route path="/contact" component={Contact} />
+      <Route path="/assistant" component={Assistant} />
+      
+      {/* Protected routes that require authentication */}
+      <Route path="/create-campaign" component={isAuthenticated ? CreateCampaign : Landing} />
+      
       <Route component={NotFound} />
     </Switch>
   );
