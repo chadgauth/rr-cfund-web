@@ -225,7 +225,7 @@ export class DatabaseStorage implements IStorage {
         backers: 432,
         daysLeft: 21,
         imageUrl: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
+        userId: "demo-user-2",
         location: "Cosmic Central, Austin",
         deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
         ownerName: "Jordan Smith"
@@ -241,7 +241,7 @@ export class DatabaseStorage implements IStorage {
         backers: 165,
         daysLeft: 45,
         imageUrl: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
+        userId: "demo-user-3",
         location: "South Austin's Universe",
         deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
         ownerName: "Sam Wilson"
