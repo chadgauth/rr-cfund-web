@@ -8,10 +8,14 @@ import {
 } from "@shared/schema";
 import { handleAssistantQuery, handleImageGeneration } from "./openRouter";
 import { rateLimitAIChat } from "./rateLimit";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import { ZodError } from "zod";
 import { fromZodError } from "zod-validation-error";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth middleware
+  await setupAuth(app);
+
   // API Error Handler
   const handleError = (err: any, res: Response) => {
     console.error(err);
@@ -21,6 +25,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
     return res.status(500).json({ message: err.message || "Internal Server Error" });
   };
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
 
   // Campaign routes
   app.get("/api/campaigns", async (req, res) => {
@@ -89,26 +105,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // User routes
-  app.post("/api/users", async (req, res) => {
-    try {
-      const userData = insertUserSchema.parse(req.body);
-      
-      // Check if username or email already exists
-      const existingUser = await storage.getUserByUsername(userData.username);
-      if (existingUser) {
-        return res.status(400).json({ message: "Username already exists" });
-      }
-      
-      const user = await storage.createUser(userData);
-      
-      // Don't return the password
-      const { password, ...userWithoutPassword } = user;
-      res.status(201).json(userWithoutPassword);
-    } catch (err) {
-      handleError(err, res);
-    }
-  });
+  // Users are managed through authentication - no manual user creation needed
 
   // Testimonials route
   app.get("/api/testimonials", async (req, res) => {

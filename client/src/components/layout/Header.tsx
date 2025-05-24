@@ -1,11 +1,20 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/useAuth";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [location] = useLocation();
+  const { user, isAuthenticated } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -69,6 +78,39 @@ const Header = () => {
             <Button asChild className="bg-primary text-white rounded-xl">
               <Link href="/create-campaign">Start Campaign</Link>
             </Button>
+            
+            {/* User Profile Menu */}
+            {isAuthenticated && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={(user as any).profileImageUrl || ""} alt={(user as any).firstName || "User"} />
+                      <AvatarFallback>
+                        {(user as any).firstName?.[0] || (user as any).email?.[0] || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuItem className="flex-col items-start">
+                    <div className="font-medium">{(user as any).firstName} {(user as any).lastName}</div>
+                    <div className="text-xs text-muted-foreground">{(user as any).email}</div>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => window.location.href = '/api/logout'}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button 
+                onClick={() => window.location.href = '/api/login'}
+                className="bg-primary text-white rounded-xl"
+              >
+                Log In
+              </Button>
+            )}
           </div>
           
           {/* Mobile menu button */}

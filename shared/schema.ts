@@ -1,13 +1,29 @@
-import { pgTable, text, serial, integer, boolean, timestamp, doublePrecision } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, doublePrecision, varchar, jsonb, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Session storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const sessions = pgTable(
+  "sessions",
+  {
+    sid: varchar("sid").primaryKey(),
+    sess: jsonb("sess").notNull(),
+    expire: timestamp("expire").notNull(),
+  },
+  (table) => [index("IDX_session_expire").on(table.expire)],
+);
+
+// User storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
-  email: text("email").notNull().unique(),
-  name: text("name"),
+  id: varchar("id").primaryKey().notNull(),
+  email: varchar("email").unique(),
+  firstName: varchar("first_name"),
+  lastName: varchar("last_name"),
+  profileImageUrl: varchar("profile_image_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const campaigns = pgTable("campaigns", {
@@ -21,7 +37,7 @@ export const campaigns = pgTable("campaigns", {
   backers: integer("backers").default(0),
   daysLeft: integer("days_left").default(30),
   imageUrl: text("image_url"),
-  userId: integer("user_id").notNull(),
+  userId: varchar("user_id").notNull(),
   location: text("location"),
   createdAt: timestamp("created_at").defaultNow(),
   deadline: timestamp("deadline"),
@@ -32,7 +48,7 @@ export const donations = pgTable("donations", {
   id: serial("id").primaryKey(),
   amount: integer("amount").notNull(),
   campaignId: integer("campaign_id").notNull(),
-  userId: integer("user_id").notNull(),
+  userId: varchar("user_id").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
   anonymous: boolean("anonymous").default(false),
 });
@@ -61,9 +77,12 @@ export const insertDonationSchema = createInsertSchema(donations).omit({ created
 export const insertTestimonialSchema = createInsertSchema(testimonials);
 export const insertLocationSchema = createInsertSchema(locations);
 
-// Types
-export type InsertUser = z.infer<typeof insertUserSchema>;
+// Types for Replit Auth
+export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+
+// Other types
+export type InsertUser = z.infer<typeof insertUserSchema>;
 
 export type InsertCampaign = z.infer<typeof insertCampaignSchema>;
 export type Campaign = typeof campaigns.$inferSelect;

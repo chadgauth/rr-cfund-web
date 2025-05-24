@@ -1,5 +1,5 @@
 import { 
-  users, type User, type InsertUser,
+  users, type User, type UpsertUser,
   campaigns, type Campaign, type InsertCampaign,
   donations, type Donation, type InsertDonation,
   testimonials, type Testimonial, type InsertTestimonial,
@@ -8,9 +8,9 @@ import {
 
 export interface IStorage {
   // User operations
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
   
   // Campaign operations
   getCampaigns(): Promise<Campaign[]>;
@@ -43,19 +43,25 @@ export class DatabaseStorage implements IStorage {
   }
   
   // User operations
-  async getUser(id: number): Promise<User | undefined> {
-    const result = await db.select().from(users).where(eq(users.id, id));
-    return result[0];
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const result = await db.select().from(users).where(eq(users.username, username));
-    return result[0];
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const result = await db.insert(users).values(insertUser).returning();
-    return result[0];
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(userData)
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    return user;
   }
   
   // Campaign operations
@@ -160,22 +166,13 @@ export class DatabaseStorage implements IStorage {
         await this.seedCampaigns();
       }
       
-      if (await this.getUserByUsername("demo") === undefined) {
-        await this.seedUsers();
-      }
+      // Skip user seeding for Replit Auth - users are created when they log in
     } catch (error) {
       console.error("Error seeding data:", error);
     }
   }
   
-  private async seedUsers() {
-    await db.insert(users).values({
-      username: "demo",
-      password: "password",
-      email: "demo@example.com",
-      name: "Demo User"
-    });
-  }
+  // Users are created via Replit Auth, no need to seed
   
   private async seedTestimonials() {
     const testimonialsData = [
@@ -212,7 +209,7 @@ export class DatabaseStorage implements IStorage {
         backers: 214,
         daysLeft: 14,
         imageUrl: "https://images.unsplash.com/photo-1543007631-283050bb3e8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
+        userId: "demo-user-1",
         location: "East Austin and Beyond",
         deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         ownerName: "Riley Johnson"
@@ -228,7 +225,7 @@ export class DatabaseStorage implements IStorage {
         backers: 432,
         daysLeft: 21,
         imageUrl: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
+        userId: "demo-user-2",
         location: "Cosmic Central, Austin",
         deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000),
         ownerName: "Jordan Smith"
@@ -244,7 +241,7 @@ export class DatabaseStorage implements IStorage {
         backers: 165,
         daysLeft: 45,
         imageUrl: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-        userId: 1,
+        userId: "demo-user-3",
         location: "South Austin's Universe",
         deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
         ownerName: "Sam Wilson"
