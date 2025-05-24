@@ -131,10 +131,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // AI Assistant route
-  app.post("/api/assistant", rateLimitAIChat, handleAssistantQuery);
+  // app.post("/api/assistant", rateLimitAIChat, handleAssistantQuery);
   
   // AI Image Generation route
-  app.post("/api/generate-image", handleImageGeneration);
+  // app.post("/api/generate-image", handleImageGeneration);
 
   const httpServer = createServer(app);
   return httpServer;

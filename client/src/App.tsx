@@ -11,7 +11,7 @@ import CampaignDetail from "@/pages/CampaignDetail";
 import CreateCampaign from "@/pages/CreateCampaign";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
-import Assistant from "@/pages/Assistant";
+// import Assistant from "@/pages/Assistant";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -23,7 +23,7 @@ function Router() {
       <Route path="/create-campaign" component={CreateCampaign} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
-      <Route path="/assistant" component={Assistant} />
+      {/* <Route path="/assistant" component={Assistant} /> */}
       <Route component={NotFound} />
     </Switch>
   );

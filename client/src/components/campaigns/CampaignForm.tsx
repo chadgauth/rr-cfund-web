@@ -9,7 +9,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { queryClient } from "@/lib/queryClient";
 import { CampaignTemplates } from "./CampaignTemplates";
 import { MarkdownEditor } from "@/components/ui/md-editor";
-import { ImageGenerator } from "./ImageGenerator";
+// import { ImageGenerator } from "./ImageGenerator";
 
 import {
   Form,
@@ -310,12 +310,14 @@ const CampaignForm = () => {
                       value={field.value || ''}
                       onChange={field.onChange}
                     />
+                    {/*
                     <FormControl>
                       <ImageGenerator 
                         prompt={form.watch("title") || ''} 
                         onImageGenerated={handleImageGenerated} 
                       />
                     </FormControl>
+                    */}
                   </div>
                   <FormDescription>
                     Generate a cosmic-themed image for your campaign using AI, or use our default rainbow gradient.
